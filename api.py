@@ -1,14 +1,29 @@
-from flask import Flask, request, jsonify, url_for, make_response
+from flask import Flask, request, jsonify, url_for, make_response 
+import repository
 
 app = Flask(__name__)
 
 # 1) GET /imoveis  (com filtros por query params)
 @app.route('/imoveis', methods=['GET'])
 def listar_imoveis():
-    # 1. ler query params: tipo = request.args.get('tipo'), cidade = request.args.get('cidade')
-    # 2. consultar fonte de dados (lista/BD) aplicando filtros se vierem
-    # 3. retornar jsonify(lista), 200
-    ...
+    parametros = {
+        "id": request.args.get("id"),
+        "logradouro": request.args.get("logradouro"),
+        "tipo_logradouro": request.args.get("tipo_logradouro"),
+        "bairro": request.args.get("bairro"),   
+        "cidade": request.args.get("cidade"),
+        "cep": request.args.get("cep"),
+        "tipo": request.args.get("tipo"),
+        "valor": request.args.get("valor"),
+        "data_aquisicao": request.args.get("data_aquisicao"),
+    }
+    
+    filtros = {k: v for k, v in parametros.items() if v not in (None, "", " ")}
+    
+    lista = repository.listar_com_filtros(filtros)
+    
+    return jsonify(lista), 200
+
 
 # 2) GET /imoveis/<id>
 @app.route('/imoveis/<int:id>', methods=['GET'])

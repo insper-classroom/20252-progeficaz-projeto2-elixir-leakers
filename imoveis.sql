@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS imoveis (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     logradouro TEXT NOT NULL,
     tipo_logradouro TEXT,
     bairro TEXT,
     cidade TEXT NOT NULL,
     cep TEXT,
-    tipo TEXT,
-    valor REAL,
+    tipo TEXT NOT NULL,
+    valor REAL NOT NULL,
     data_aquisicao TEXT
 );
 
@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS imoveis (
 -- 'VARCHAR' e 'CHAR': O SQLite não diferencia muito entre os tipos 'VARCHAR', 'CHAR', e 'TEXT'. Todos eles são armazenados como 'TEXT'. Portanto, todos os campos de texto foram alterados para 'TEXT'.
 -- 'DECIMAL': O SQLite não suporta diretamente o tipo 'DECIMAL'. Em vez disso, você pode usar 'REAL' para armazenar números de ponto flutuante, o que é suficiente para a maioria dos propósitos de armazenamento de valores monetários. Se precisar de precisão exata para cálculos financeiros, considere armazenar os valores em centavos como um inteiro ou realizar o controle de precisão na aplicação.
 -- 'DATE': O SQLite não tem um tipo de dados específico para datas. Em vez disso, as datas podem ser armazenadas como 'TEXT' (no formato ISO8601, por exemplo, "YYYY-MM-DD") para simplicidade e legibilidade.
-
 
 
 INSERT INTO imoveis (logradouro, tipo_logradouro, bairro, cidade, cep, tipo, valor, data_aquisicao) VALUES ('Nicole Common', 'Travessa', 'Lake Danielle', 'Judymouth', '85184', 'casa em condominio', 488423.52, '2017-07-29');
