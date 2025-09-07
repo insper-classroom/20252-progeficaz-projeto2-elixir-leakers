@@ -1,4 +1,4 @@
-from db import query_all
+from db import query_all, query_one
 
 def listar(tipo=None, cidade=None):
     sql = "SELECT * FROM imoveis"
@@ -19,8 +19,6 @@ def listar(tipo=None, cidade=None):
     sql += " ORDER BY id"
 
     return query_all(sql, params)
-
-from db import query_all
 
 # Lista de colunas que podem ser filtradas
 ALLOWED = {
@@ -58,3 +56,10 @@ def listar_com_filtros(filtros: dict):
     sql += " ORDER BY id"
     return query_all(sql, params)
 
+def buscar_por_id(id_: int):
+    """
+    Busca um imóvel pelo id.
+    Retorna um dict se existir, ou None se não existir.
+    """
+    sql = "SELECT * FROM imoveis WHERE id = ?"
+    return query_one(sql, (id_,))

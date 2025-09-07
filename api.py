@@ -28,10 +28,10 @@ def listar_imoveis():
 # 2) GET /imoveis/<id>
 @app.route('/imoveis/<int:id>', methods=['GET'])
 def obter_imovel(id):
-    # 1. buscar item por id
-    # 2a. se achar: return jsonify(item), 200
-    # 2b. se não:  return jsonify({"error": "Não encontrado"}), 404
-    ...
+    item = repository.buscar_por_id(id)
+    if not item:
+        return jsonify({"error": "Não encontrado"}), 404
+    return jsonify(item), 200
 
 # 3) POST /imoveis
 @app.route('/imoveis', methods=['POST'])
