@@ -1,4 +1,4 @@
-from db import query_all, query_one
+from db import query_all, query_one, execute
 
 def listar(tipo=None, cidade=None):
     sql = "SELECT * FROM imoveis"
@@ -63,3 +63,25 @@ def buscar_por_id(id_: int):
     """
     sql = "SELECT * FROM imoveis WHERE id = ?"
     return query_one(sql, (id_,))
+
+def criar(data: dict) -> int:
+    """
+    Insere um imóvel na tabela 'imoveis' e retorna o id gerado.
+    'data' deve estar validado (sem 'id', tipos corretos).
+    """
+    # 1) Filtra apenas colunas conhecidas da tabela
+    fields = [k for k in data.keys() if k in ALLOWED]
+    if not fields:
+        # não há nada para inserir
+        raise ValueError("Nenhum campo válido para inserir.")
+
+    # 2) Monta SQL dinâmico: INSERT INTO imoveis (colunas) VALUES (?, ?, ...)
+    placeholders = ", ".join(["?"] * len(fields))
+    columns = ", ".join(fields)
+    values = [data[k] for k in fields]
+
+    sql = f"INSERT INTO imoveis ({columns}) VALUES ({placeholders})"
+
+    # 3) Executa e retorna o id gerado
+    new_id, _ = execute(sql, values)
+    return new_id

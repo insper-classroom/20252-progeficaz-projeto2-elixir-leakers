@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, make_response 
-import repository
+import repository, validators
 
 app = Flask(__name__)
 
@@ -33,17 +33,38 @@ def obter_imovel(id):
         return jsonify({"error": "Não encontrado"}), 404
     return jsonify(item), 200
 
+
 # 3) POST /imoveis
 @app.route('/imoveis', methods=['POST'])
 def criar_imovel():
-    # 1. checar Content-Type (request.is_json) → 415 se errado
-    # 2. ler JSON (request.get_json) → validar campos obrigatórios/tipos → 400 se inválido
-    # 3. inserir registro (definir id) 
-    # 4. montar resposta 201 com Location apontando para /imoveis/<id_novo>
-    #    resp = make_response(jsonify(criado), 201)
-    #    resp.headers['Location'] = url_for('obter_imovel', id=novo_id, _external=True)
-    #    return resp
-    ...
+    # 1) Content-Type precisa ser JSON
+    if not request.is_json:
+        return jsonify({"error": "Content-Type deve ser application/json"}), 415
+
+    # 2) Ler JSON com segurança
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"error": "JSON inválido"}), 400
+
+    # 3) Validar e normalizar (obrigatórios, tipos, formatos)
+    ok, data_or_err = validators.validar_imovel(payload, parcial=False)
+    if not ok:
+        return jsonify({"error": data_or_err}), 400
+    data = data_or_err  # já vem com 'valor' como float, sem 'id', etc.
+
+    # 4) Inserir via repositório
+    try:
+        novo_id = repository.criar(data)
+    except Exception as e:
+        # ajuste esse tratamento conforme seu schema (400/409/etc.)
+        return jsonify({"error": "Falha ao criar", "details": str(e)}), 400
+
+    # 5) Buscar o registro criado e devolver 201 + Location
+    criado = repository.buscar_por_id(novo_id)
+    resp = make_response(jsonify(criado), 201)
+    resp.headers['Location'] = url_for('obter_imovel', id=novo_id, _external=True)
+    return resp
+
 
 # 4) PUT ou PATCH /imoveis/<id> (escolha sua semântica)
 @app.route('/imoveis/<int:id>', methods=['PUT', 'PATCH'])
@@ -54,6 +75,7 @@ def atualizar_imovel(id):
     # 4. ATENÇÃO: atualize o objeto/linha real (mutação), não reatribua variável local
     # 5. return jsonify(atualizado), 200
     ...
+
 
 # 5) DELETE /imoveis/<id>
 @app.route('/imoveis/<int:id>', methods=['DELETE'])
