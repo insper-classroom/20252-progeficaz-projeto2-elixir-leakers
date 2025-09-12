@@ -17,10 +17,8 @@ def listar_imoveis():
         "valor": request.args.get("valor"),
         "data_aquisicao": request.args.get("data_aquisicao"),
     }
-    
-    filtros = {k: v for k, v in parametros.items() if v not in (None, "", " ")}
-    
-    lista = repository.listar_com_filtros(filtros)
+        
+    lista = repository.listar(parametros)
     
     return jsonify(lista), 200
 
