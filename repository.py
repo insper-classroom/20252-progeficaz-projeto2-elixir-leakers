@@ -85,3 +85,31 @@ def criar(data: dict) -> int:
     # 3) Executa e retorna o id gerado
     new_id, _ = execute(sql, values)
     return new_id
+
+def atualizar_total(id_: int, data: dict):
+    """
+    PUT: substitui a representação inteira do imóvel.
+    Campos não enviados em 'data' viram NULL (semântica de PUT).
+    Retorna o registro final, ou None se o id não existir.
+    """
+    if not buscar_por_id(id_):
+        return None
+
+    # usa as colunas válidas do seu schema
+    cols = list(ALLOWED)  # {"logradouro","tipo_logradouro","bairro","cidade","cep","tipo","valor","data_aquisicao"}
+    cols.sort()  # só para manter ordem determinística (opcional)
+
+    set_parts = [f"{col} = ?" for col in cols]
+    params = [data.get(col) for col in cols]  # se não veio no body → None
+    params.append(id_)
+
+    sql = f"UPDATE imoveis SET {', '.join(set_parts)} WHERE id = ?"
+    _, rowcount = execute(sql, params)
+    if rowcount == 0:
+        return None
+
+    return buscar_por_id(id_)
+
+def remover(id_: int) -> bool:
+    _, rowcount = execute("DELETE FROM imoveis WHERE id = ?", (id_,))
+    return rowcount > 0
