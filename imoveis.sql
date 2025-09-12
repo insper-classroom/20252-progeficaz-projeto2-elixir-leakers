@@ -1,14 +1,15 @@
 CREATE TABLE IF NOT EXISTS imoveis (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    logradouro TEXT NOT NULL,
-    tipo_logradouro TEXT,
-    bairro TEXT,
-    cidade TEXT NOT NULL,
-    cep TEXT,
-    tipo TEXT NOT NULL,
-    valor REAL NOT NULL,
-    data_aquisicao TEXT
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  logradouro TEXT NOT NULL,
+  tipo_logradouro TEXT,
+  bairro TEXT,
+  cidade TEXT NOT NULL,
+  cep TEXT,
+  tipo TEXT NOT NULL,
+  valor DOUBLE NOT NULL,
+  data_aquisicao DATE
 );
+
 
 -- ALGUMAS OBSERVAÇÕES SOBRE A CRIAÇÃO
 -- 'id': O SQLite usa 'INTEGER PRIMARY KEY AUTOINCREMENT' para definir uma coluna como chave primária com autoincremento.
