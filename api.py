@@ -3,6 +3,24 @@ import repository, validators
 
 app = Flask(__name__)
 
+# 1) GET /imoveis  (com filtros por query params)
+@app.route('/imoveis', methods=['GET'])
+def listar_imoveis():
+    parametros = {
+        "id": request.args.get("id"),
+        "logradouro": request.args.get("logradouro"),
+        "tipo_logradouro": request.args.get("tipo_logradouro"),
+        "bairro": request.args.get("bairro"),   
+        "cidade": request.args.get("cidade"),
+        "cep": request.args.get("cep"),
+        "tipo": request.args.get("tipo"),
+        "valor": request.args.get("valor"),
+        "data_aquisicao": request.args.get("data_aquisicao"),
+    }
+        
+    lista = repository.listar(parametros)
+    
+    return jsonify(lista), 200
 
 
 # 2) GET /imoveis/<id>
