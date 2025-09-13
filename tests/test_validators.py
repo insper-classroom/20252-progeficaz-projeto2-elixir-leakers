@@ -1,4 +1,3 @@
-# tests/test_validators.py
 import pytest
 import validators
 
@@ -13,7 +12,7 @@ def test_validar_imovel_valido_transforma_valor_em_float():
     ({"cidade":"SP","tipo":"casa","valor":100}),
     ({"logradouro":"Rua X","tipo":"casa","valor":100}),
     ({"logradouro":"Rua X","cidade":"SP","valor":100}),
-    ({"logradouro":"Rua X","cidade":"SP","tipo":"casa"})  # sem valor
+    ({"logradouro":"Rua X","cidade":"SP","tipo":"casa"}) 
 ])
 def test_validar_imovel_falta_obrigatorio(faltando):
     ok, msg = validators.validar_imovel(faltando, parcial=False)
