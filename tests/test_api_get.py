@@ -1,9 +1,10 @@
-from unittest.mock import patch
+from unittest.mock import patch, ANY
 from api import app
 
 def test_obter_imoveis():
     fake_data = [
         {
+            "id": 1,
             "logradouro": "Nicole Common",
             "tipo_logradouro": "Travessa",
             "bairro": "Lake Danielle",
@@ -14,6 +15,7 @@ def test_obter_imoveis():
             "data_aquisicao": "2017-07-29"
         },
         {
+            "id": 2,
             "logradouro": "Price Prairie",
             "tipo_logradouro": "Travessa",
             "bairro": "Colonton",
@@ -30,5 +32,9 @@ def test_obter_imoveis():
         resp = client.get("/imoveis")
 
         assert resp.status_code == 200
-        assert resp.get_json() == fake_data
-        mock_listar.assert_called_once_with({})  
+        body = resp.get_json()
+
+        esperado = [dict(item, _links=ANY) for item in fake_data]
+        assert body == esperado
+
+        mock_listar.assert_called_once_with({})
