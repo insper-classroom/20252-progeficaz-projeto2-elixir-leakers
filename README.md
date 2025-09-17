@@ -18,7 +18,7 @@ API RESTful em Flask para gerenciar imóveis. O projeto segue TDD (pytest), util
 
 A API está rodando publicamente em:
 
-🔗 http://54.196.232.66/
+🔗 http://54.196.232.66/imoveis
 
 ## 🧰 Stack
 
