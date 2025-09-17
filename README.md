@@ -36,7 +36,7 @@ A API está rodando publicamente em:
 ## 🚀 Como rodar localmente
 
 ```bash
-git clone <URL_DO_REPO>
+git clone <https://github.com/insper-classroom/20252-progeficaz-projeto2-elixir-leakers.git>
 cd app
 
 python -m venv venv
