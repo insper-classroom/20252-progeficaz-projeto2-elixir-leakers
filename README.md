@@ -14,6 +14,12 @@ API RESTful em Flask para gerenciar imóveis. O projeto segue TDD (pytest), util
 - `PUT /imoveis/<id>`: atualiza **toda** a representação do imóvel
 - `DELETE /imoveis/<id>`: remove um imóvel
 
+## 🌐 API em Produção
+
+A API está rodando publicamente em:
+
+🔗 http://54.196.232.66/
+
 ## 🧰 Stack
 
 - Python 3.10+, Flask
@@ -40,3 +46,6 @@ source venv/bin/activate
 venv\Scripts\activate
 
 pip install -r requirements.txt
+
+
+
