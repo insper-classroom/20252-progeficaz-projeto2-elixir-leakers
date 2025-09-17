@@ -37,7 +37,7 @@ A API está rodando publicamente em:
 
 ```bash
 git clone <URL_DO_REPO>
-cd <PASTA_DO_REPO>
+cd app
 
 python -m venv venv
 # Linux/Mac
